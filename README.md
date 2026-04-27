@@ -92,3 +92,36 @@ Run the SQL in sql/create_athena_table.sql in the AWS Athena Query Editor.
 ### 5. Connect Power BI
 Connect Power BI Desktop to AWS Athena using the Simba ODBC driver.
 See AWS [Athena ODBC Documentation](https://docs.aws.amazon.com/athena/latest/ug/connect-with-odbc.html)
+
+### 6. Optional - Provision Infrastructure
+```bash
+cd infrastructure
+terraform init
+terraform plan
+terraform apply
+```
+
+## Testing
+
+```bash
+pytest tests/ -v
+```
+
+## Project Structure
+
+```text
+├── .github/workflows/    # CI/CD pipeline
+├── infrastructure/       # Terraform IaC
+├── sql/                  # Athena DDL
+├── src/                  # Python ETL scripts
+├── tests/                # Unit tests
+├── docs/                 # Screenshots & diagrams
+├── .gitignore
+├── requirements.txt
+└── README.md
+```
+
+## License
+
+This project is for educational and portfolio purposes.
+Riot Games data used under the [Riot Developer API Terms](https://developer.riotgames.com/terms)
