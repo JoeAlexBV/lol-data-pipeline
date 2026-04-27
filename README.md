@@ -1,3 +1,9 @@
+![Python](https://img.shields.io/badge/Python-3.9+-blue?logo=python&logoColor=white)
+![AWS](https://img.shields.io/badge/AWS-S3%20%7C%20Athena-orange?logo=amazonaws&logoColor=white)
+![Terraform](https://img.shields.io/badge/IaC-Terraform-purple?logo=terraform&logoColor=white)
+![CI/CD](https://img.shields.io/badge/CI%2FCD-GitHub%20Actions-black?logo=githubactions&logoColor=white)
+![Power BI](https://img.shields.io/badge/BI-Power%20BI-yellow?logo=powerbi&logoColor=white)
+
 # League of Legends — Automated Telemetry Pipeline & Analytics Dashboard
 
 ![Architecture](docs/architecture.png)
@@ -28,7 +34,7 @@ This project demonstrates:
 **Key DAX Measures:**
 | Measure | Formula Logic |
 |---|---|
-| Win Rate | `DIVIDE(DISTINCTCOUNT(wins), DISTINCTCOUNT(matches))` — Correctly handles the 10-player-per-match structure |
+| Win Rate | `CALCULATE(DISTINCTCOUNT(match_id), win = TRUE) / DISTINCTCOUNT(match_id)` — Correctly handles the 10-player-per-match structure |
 | Avg KDA | `(Kills + Assists) / Deaths` — Universal performance metric |
 | Avg Gold Per Game | `SUM(gold_earned) / COUNTROWS(table)` — Resource generation efficiency |
 | Avg Damage Per Game | `SUM(damage) / COUNTROWS(table)` — Combat output metric |
@@ -43,6 +49,30 @@ This project demonstrates:
 | **Visualization** | Power BI | Interactive dashboard with DAX, slicers, and cross-filtering |
 | **Infrastructure** | Terraform | S3 bucket, IAM user, and Athena resources as code |
 | **CI/CD** | GitHub Actions | Automated linting (Flake8) and unit testing (PyTest) on every push |
+
+## Data Model
+
+The raw JSON payloads (~10,000+ lines per match) are flattened into a single 
+fact table optimized for analytical queries:
+
+**`fact_match_participant`** — One row per player per match
+
+| Column | Type | Description |
+|---|---|---|
+| `match_id` | string | Unique match identifier |
+| `patch_version` | string | Game version (e.g., 16.8) |
+| `game_duration_sec` | int | Match length in seconds |
+| `puuid` | string | Player unique identifier |
+| `riot_id` | string | Player display name |
+| `champion_name` | string | Champion played |
+| `team_position` | string | Role (TOP, JUNGLE, MIDDLE, BOTTOM, SUPPORT) |
+| `win` | boolean | Whether the player's team won |
+| `kills` | int | Total kills |
+| `deaths` | int | Total deaths |
+| `assists` | int | Total assists |
+| `total_damage_dealt_to_champions` | int | Damage output |
+| `gold_earned` | int | Gold income |
+| `vision_score` | int | Map awareness metric |
 
 ## Tech Stack
 
